@@ -1,7 +1,9 @@
 // Serial.cpp
 
 #include "Serial.h"
+#include <iostream>
 
+using namespace std;
 
 CSerial::CSerial()
 {
@@ -147,7 +149,10 @@ int CSerial::ReadData( void *buffer, int limit )
 	COMSTAT ComStat;
 
 	ClearCommError( m_hIDComDev, &dwErrorFlags, &ComStat );
-	if( !ComStat.cbInQue ) return( 0 );
+	if (!ComStat.cbInQue)
+	{
+		return(0);
+	}
 
 	dwBytesRead = (DWORD) ComStat.cbInQue;
 	if( limit < (int) dwBytesRead ) dwBytesRead = (DWORD) limit;
@@ -160,7 +165,6 @@ int CSerial::ReadData( void *buffer, int limit )
 			}
 		return( 0 );
 		}
-
 	return( (int) dwBytesRead );
 
 }
