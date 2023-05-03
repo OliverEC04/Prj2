@@ -7,7 +7,7 @@ using namespace std;
 class Day
 {
 public:
-	Day(string name = "undefined", int alarmTime = 0, int coffeeTime = 0, int lampTime = 0, int curtainTime = 0);
+	Day(int name = 9, int alarmTime = 99999, int coffeeTime = 99999, int lampTime = 99999, int curtainTime = 99999);
 
 	void setAlarmTime(int time);
 	void setCoffeeTime(int time);

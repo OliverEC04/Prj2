@@ -1,5 +1,11 @@
 #pragma once
-
+#include "Serial.h"
+#include "Week.h"
+#include "Ui.h"
+#include <Windows.h>
+#include <conio.h>
+#include <iostream>
+#include <string>
 #include "Day.h"
 
 class Week
@@ -7,9 +13,8 @@ class Week
 public:
 	Week();
 
-	string getWeekConf();
+	void sendConfig(CSerial& serial);
 
-private:
-	Day* days_;
+	Day days_[7];	
 };
 
