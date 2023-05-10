@@ -8,7 +8,7 @@
 
 bool recieveSerial(CSerial& serial);
 
-void main()
+void main1()
 {
 	CSerial serial;
 	string input;
@@ -34,6 +34,16 @@ void main()
 
 		week.sendConfig(serial);
 	//}
+}
+
+void main()
+{
+	Ui ui;
+
+	while (1)
+	{
+		ui.update();
+	}
 }
 
 bool recieveSerial(CSerial& serial)
