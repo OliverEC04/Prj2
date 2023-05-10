@@ -5,6 +5,8 @@
 #define KEY_LEFT 75
 #define KEY_RIGHT 77
 
+int concatInts(int sel, int hrs, int min);
+
 Ui::Ui()
 {
 	daySelector_ = 0;
@@ -68,6 +70,11 @@ void Ui::dayMenu()
 				cout << timeStrings_[i] << endl;
 			}
 
+			return;
+			break;
+
+		case 'f':
+			week_.sendConfig();
 			return;
 			break;
 	}
@@ -195,6 +202,27 @@ void Ui::inputMenu()
 	case KEY_RIGHT:
 		menuSelector_ = 1;
 
+		int timeSaved = concatInts(daySelector_ + 1, inputHrs_, inputMin_);
+
+		switch (timeSelector_)
+		{
+			case 0:
+				week_.days_[daySelector_].setAlarmTime(timeSaved);
+				break;
+
+			case 1:
+				week_.days_[daySelector_].setCoffeeTime(timeSaved);
+				break;
+
+			case 2:
+				week_.days_[daySelector_].setLampTime(timeSaved);
+				break;
+
+			case 3:
+				week_.days_[daySelector_].setCurtainTime(timeSaved);
+				break;
+		}
+
 		system("cls");
 
 		timeStrings_[timeSelector_].replace(0, 1, ">");
@@ -217,4 +245,23 @@ void Ui::inputMenu()
 	{
 		cout << inputStrings_[i] << endl;
 	}
+}
+
+int concatInts(int sel, int hrs, int min)
+{
+	string selStr = to_string(sel);
+	string hrsStr = to_string(hrs);
+	string minStr = to_string(min);
+
+	if (hrs < 10)
+	{
+		hrsStr = "0" + hrsStr;
+	}
+
+	if (min < 10)
+	{
+		minStr = "0" + minStr;
+	}
+
+	return stoi(selStr + hrsStr + minStr);
 }

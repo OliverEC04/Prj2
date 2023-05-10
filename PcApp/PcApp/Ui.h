@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <conio.h>
+#include "Week.h"
 
 #define DAYS 7
 #define TIMES 4
@@ -19,6 +20,7 @@ public:
 	void inputMenu();
 
 private:
+	Week week_;
 	int menuSelector_ = 0;
 	int daySelector_ = 0;
 	int timeSelector_ = 0;

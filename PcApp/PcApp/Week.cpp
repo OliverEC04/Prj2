@@ -8,11 +8,11 @@ Week::Week()
 {
 	for (size_t i = 0; i < 7; i++)
 	{
-		days_[i] = Day(i+1);
+		days_[i] = Day(i);
 	}
 }
 
-void Week::sendConfig(CSerial& serial)
+void Week::sendConfig(/*CSerial& serial*/)
 {
 	string config;
 

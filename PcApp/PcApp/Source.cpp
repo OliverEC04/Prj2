@@ -8,15 +8,15 @@
 
 bool recieveSerial(CSerial& serial);
 
-void main1()
+void main()
 {
 	CSerial serial;
 	string input;
-	Week week;
+	Ui ui;
 
-	//while (1)
-	//{
-		if (recieveSerial(serial) == 1)
+	while (1)
+	{
+		/*if (recieveSerial(serial) == 1)
 			cout << "recieveSerial(serial)";
 
 		cin >> input;
@@ -32,16 +32,8 @@ void main1()
 		}
 
 
-		week.sendConfig(serial);
-	//}
-}
+		week.sendConfig(serial);*/
 
-void main()
-{
-	Ui ui;
-
-	while (1)
-	{
 		ui.update();
 	}
 }
