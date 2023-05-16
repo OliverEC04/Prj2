@@ -3,6 +3,7 @@
 #include <iostream>
 #include <conio.h>
 #include "Week.h"
+#include "Serial.h"
 
 #define DAYS 7
 #define TIMES 4
@@ -14,8 +15,8 @@ class Ui
 {
 public:
 	Ui();
-	void update(CSerial& serial);
-	void dayMenu(CSerial& serial);
+	void update();
+	void dayMenu();
 	void timeMenu();
 	void inputMenu();
 

@@ -12,18 +12,15 @@ Week::Week()
 	}
 }
 
-void Week::sendConfig(CSerial& serial)
+string Week::getConfig(int day)
 {
 	string config;
+	day--;
 
-	for (size_t i = 0; i < 7; i++)
-	{
-		config += to_string(days_[i].getAlarmTime()) + ',';
-		config += to_string(days_[i].getCoffeeTime()) + ',';
-		config += to_string(days_[i].getLampTime()) + ',';
-		config += to_string(days_[i].getCurtainTime()) + ',';
-	}
+	config += to_string(days_[day].getAlarmTime());
+	config += to_string(days_[day].getCoffeeTime());
+	config += to_string(days_[day].getLampTime());
+	config += to_string(days_[day].getCurtainTime());
 
-	cout << config;
-	serial.SendData(config.c_str(), CONFIG_LENGTH);
+	return config;
 }

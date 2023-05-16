@@ -3,7 +3,6 @@
 #include <conio.h>
 #include <iostream>
 #include <string>
-#include "Serial.h"
 #define length 1
 
 //bool recieveSerial(CSerial& serial);
@@ -11,12 +10,9 @@
 int main()
 {
 	string input;
-	//Ui ui;
-	CSerial *s = new CSerial();
+	Ui ui;
 
-	//
-
-	string config = "0025299999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900148";
+	//string config = "0025299999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900148";
 
 	while (1)
 	{
@@ -40,7 +36,7 @@ int main()
 
 
 
-		switch (_getch())
+		/*switch (_getch())
 		{
 		case 'f':
 			if (!s->Open(7, 9600))
@@ -53,10 +49,10 @@ int main()
 				cout << config.c_str();
 			}
 			break;
-		}
+		}*/
 		
 
-		//ui.update(serial);
+		ui.update();
 	}
 }
 

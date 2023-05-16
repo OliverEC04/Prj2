@@ -7,6 +7,7 @@
 
 int concatInts(int sel, int hrs, int min);
 
+CSerial* s = new CSerial();
 
 Ui::Ui()
 {
@@ -18,12 +19,12 @@ Ui::Ui()
 	}
 }
 
-void Ui::update(CSerial& serial)
+void Ui::update()
 {
 	switch (menuSelector_)
 	{
 	case 0:
-		dayMenu(serial);
+		dayMenu();
 		break;
 
 	case 1:
@@ -34,11 +35,9 @@ void Ui::update(CSerial& serial)
 		inputMenu();
 		break;
 	}
-
-	//cout << daySelector_ << " " << timeSelector_;
 }
 
-void Ui::dayMenu(CSerial& serial)
+void Ui::dayMenu()
 {
 	dayStrings_[daySelector_].replace(0, 1, " ");
 
@@ -75,7 +74,19 @@ void Ui::dayMenu(CSerial& serial)
 			break;
 
 		case 'f':
-			week_.sendConfig(serial);
+			for (size_t i = 1; i <= 7; i++)
+			{
+				if (!s->Open(3, 9600))
+				{
+					cout << "Failed to open port!" << endl;
+				}
+				else
+				{
+					string config = week_.getConfig(i);
+					s->SendData(config.c_str(), 5 * 4);
+					cout << config << endl;
+				}
+			}
 			return;
 			break;
 	}
