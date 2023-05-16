@@ -12,7 +12,7 @@ class Week
 public:
 	Week();
 
-	void sendConfig(/*CSerial& serial*/);
+	void sendConfig(CSerial& serial);
 
 	Day days_[7];	
 };

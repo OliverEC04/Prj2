@@ -12,7 +12,7 @@ Week::Week()
 	}
 }
 
-void Week::sendConfig(/*CSerial& serial*/)
+void Week::sendConfig(CSerial& serial)
 {
 	string config;
 
@@ -25,5 +25,5 @@ void Week::sendConfig(/*CSerial& serial*/)
 	}
 
 	cout << config;
-	//serial.SendData(config.c_str(), CONFIG_LENGTH);
+	serial.SendData(config.c_str(), CONFIG_LENGTH);
 }

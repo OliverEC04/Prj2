@@ -14,8 +14,8 @@ class Ui
 {
 public:
 	Ui();
-	void update();
-	void dayMenu();
+	void update(CSerial& serial);
+	void dayMenu(CSerial& serial);
 	void timeMenu();
 	void inputMenu();
 

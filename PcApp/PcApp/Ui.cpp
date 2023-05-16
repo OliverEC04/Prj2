@@ -7,6 +7,7 @@
 
 int concatInts(int sel, int hrs, int min);
 
+
 Ui::Ui()
 {
 	daySelector_ = 0;
@@ -17,12 +18,12 @@ Ui::Ui()
 	}
 }
 
-void Ui::update()
+void Ui::update(CSerial& serial)
 {
 	switch (menuSelector_)
 	{
 	case 0:
-		dayMenu();
+		dayMenu(serial);
 		break;
 
 	case 1:
@@ -37,7 +38,7 @@ void Ui::update()
 	//cout << daySelector_ << " " << timeSelector_;
 }
 
-void Ui::dayMenu()
+void Ui::dayMenu(CSerial& serial)
 {
 	dayStrings_[daySelector_].replace(0, 1, " ");
 
@@ -74,7 +75,7 @@ void Ui::dayMenu()
 			break;
 
 		case 'f':
-			week_.sendConfig();
+			week_.sendConfig(serial);
 			return;
 			break;
 	}

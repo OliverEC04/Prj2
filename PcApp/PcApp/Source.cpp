@@ -1,5 +1,3 @@
-#include "Serial.h"
-#include "Week.h"
 #include "Ui.h"
 #include <Windows.h>
 #include <conio.h>
@@ -10,9 +8,9 @@ bool recieveSerial(CSerial& serial);
 
 void main()
 {
-	CSerial serial;
 	string input;
 	Ui ui;
+	CSerial *serial = new CSerial();
 
 	while (1)
 	{
@@ -34,13 +32,21 @@ void main()
 
 		week.sendConfig(serial);*/
 
-		ui.update();
+		if (!serial->Open(10, 9600))
+		{
+			cout << "Serial working" << endl;
+			serial->SendData("V", 1);
+		}
+		else
+			cout << "Failed to open port!" << endl;
+
+		//ui.update(serial);
 	}
 }
 
 bool recieveSerial(CSerial& serial)
 {
-	if (serial.Open(6, 9600))
+	if (serial.Open(10, 9600))
 	{
 		char* lpBuffer = new char[1];
 		int nBytesRead = serial.ReadData(lpBuffer, 1);
