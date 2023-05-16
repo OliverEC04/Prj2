@@ -3,14 +3,20 @@
 #include <conio.h>
 #include <iostream>
 #include <string>
+#include "Serial.h"
+#define length 1
 
-bool recieveSerial(CSerial& serial);
+//bool recieveSerial(CSerial& serial);
 
-void main()
+int main()
 {
 	string input;
-	Ui ui;
-	CSerial *serial = new CSerial();
+	//Ui ui;
+	CSerial *s = new CSerial();
+
+	//
+
+	string config = "0025299999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999900148";
 
 	while (1)
 	{
@@ -32,37 +38,47 @@ void main()
 
 		week.sendConfig(serial);*/
 
-		if (!serial->Open(10, 9600))
+
+
+		switch (_getch())
 		{
-			cout << "Serial working" << endl;
-			serial->SendData("V", 1);
+		case 'f':
+			if (!s->Open(7, 9600))
+			{
+				cout << "Failed to open port!" << endl;
+			}
+			else
+			{
+				s->SendData(config.c_str(), 140);
+				cout << config.c_str();
+			}
+			break;
 		}
-		else
-			cout << "Failed to open port!" << endl;
+		
 
 		//ui.update(serial);
 	}
 }
 
-bool recieveSerial(CSerial& serial)
-{
-	if (serial.Open(10, 9600))
-	{
-		char* lpBuffer = new char[1];
-		int nBytesRead = serial.ReadData(lpBuffer, 1);
-		if (lpBuffer[0] > 0)
-		{
-			delete[]lpBuffer;
-			return true;
-		}
-		else
-		{
-			delete[]lpBuffer;
-			return false;
-		}
-	}
-	else
-		cout << "Failed to open port!" << endl;
-	
-	return 0;
-}
+//bool recieveSerial(CSerial& serial)
+//{
+//	if (serial.Open(10, 9600))
+//	{
+//		char* lpBuffer = new char[1];
+//		int nBytesRead = serial.ReadData(lpBuffer, 1);
+//		if (lpBuffer[0] > 0)
+//		{
+//			delete[]lpBuffer;
+//			return true;
+//		}
+//		else
+//		{
+//			delete[]lpBuffer;
+//			return false;
+//		}
+//	}
+//	else
+//		cout << "Failed to open port!" << endl;
+//	
+//	return 0;
+//}
