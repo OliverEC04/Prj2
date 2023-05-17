@@ -11,42 +11,45 @@
 
 #include "Led.h"
 
-// 10100101
-
 // HUSK AT LÆS FRA HØJRE !!!!!!!!!!!!!!
 
 char manchesterDecoder2(char addressByte, char dataByte)
 {
-	char decoded = addressByte << 4;
+	char decodedByte = addressByte;
 	
 	if (addressByte == 0b00000111)
 	{
 		for (char i = 0; i < 4; i++)
 		{
-			char checkByte = dataByte & (0b00000011 << i * 2);
+			char checkByte = dataByte << (i * 2); // Shift 2 left, since we only check the two left bits
+			checkByte &= 0b11000000; // Set all other bits than the two left to 0
 			
-			checkByte = checkByte >> (i * 2);
-			
-			if ((checkByte | 0b00000010 == 0xFF) && (checkByte & 0b00000001 == 0)) // if 10
+			if (checkByte == 0b10000000) // if 10 (0)
 			{
-				writeAllLEDs(0b01010101);
-				decoded &= 0b11111110 << i; // add 0 to end
+				// Shift 1 left, and add 0 on right
+				decodedByte = decodedByte << 1;
 			}
-			else if ((checkByte & 0b00000010 == 0xFF) && (checkByte | 0b00000001 == 0)) // if 01
+			else if (checkByte == 0b01000000) // if 01 (1)
 			{
-				writeAllLEDs(0xFF);
-				decoded |= 0b00000001 << i; // add 1 to end
+				// Shift 1 left, and add 1 on right
+				decodedByte = decodedByte << 1;
+				decodedByte |= 0b00000001;
 			}
-			
-			//writeAllLEDs(decoded);
-			_delay_ms(1000);
+			else
+			{
+				// Invalid number
+			}
 		}
 	}
+	else
+	{
+		// Wrong address
+	}
 	
-	return decoded;
+	return decodedByte;
 }
 
-int main(void)
+int manchesterDecoder2Test(void)
 {
 	initLEDport();
 	
@@ -54,7 +57,16 @@ int main(void)
 	
 	myDecode = manchesterDecoder2(0b00000111, 0b10100101);
 	
-	//writeAllLEDs(myDecode);
+	writeAllLEDs(myDecode);
+	
+	_delay_ms(5000);
+	
+	return 0;
+}
+
+int main(void)
+{
+	manchesterDecoder2Test();
 	
 	return 0;
 }
