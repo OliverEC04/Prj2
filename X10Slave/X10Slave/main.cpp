@@ -14,14 +14,17 @@
 //#include <stdio.h>
 //
 //#include "led.h"
-//#include "ManchesterDecoder.h"
 //#include "manchesterDecoder2.cpp"
 //#include "SlaveSetup.h"
 //#include "X10Reciever_1.h"
 //#include "X10Reciever_2.h"
 //
 //
-//int mainNEJ(void)
+//// Init intTrigger
+//bool intTrigger = false;
+//
+//
+//int main(void)
 //{
 	////Initiating interrupt
 	//setUpInterruptZeroCross();
@@ -35,16 +38,16 @@
 	//// Init switches
 	//DDRA = 0;
 	//
-	////Temparray
-	//char tempArray[12] = {1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1};
+	//// Temp bytes
+	//char addressByte = 0b00000111;
+	//char dataByte = 0b10100101;
 	//
 	////Main-loop: Toggle LED7 every second
     //while (1) 
     //{
+		//_delay_ms(1000);
 		//
-		////_delay_ms(1000);
-		//
-		//if(PINA == 0b10000000 || true)
+		//if(PINA == 0b10000000)
 		//{
 			//for(int i = 0; i < 12; i++)
 			//{
@@ -57,26 +60,18 @@
 					////tempArray[i] = 0;
 				//}
 				//
-				//intTrigger = false;
-				//
-				//if(intTrigger == false)
+				//if (intTrigger)
 				//{
+					//// IntTrigger aktiv her
 					//
+					//intTrigger = false;
 				//}
 				//
-				////toggleLED(7);
-				//char* decoded = manchester_decoder(tempArray, 12, 4);
-				//char* myStr;
+				//toggleLED(7);
 				//
-				//for (int i = 0; i < 4; i++)
-				//{
-					//char appChar = decoded[i];
-					//strncat(myStr, &appChar, 1);
-				//}
+				//char decoded = manchesterDecoder2(addressByte, dataByte);
 				//
-				//writeAllLEDs(char(atoi(myStr)));
-				//
-				////_delay_us(5000);
+				//_delay_us(5000);
 			//}
 		//}
     //}
