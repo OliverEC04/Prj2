@@ -11,7 +11,7 @@ class Week
 public:
 	Week();
 
-	string getConfig(int day);
+	string getConfig();
 
 	Day days_[7];	
 };

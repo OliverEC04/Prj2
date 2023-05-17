@@ -12,15 +12,16 @@ Week::Week()
 	}
 }
 
-string Week::getConfig(int day)
+string Week::getConfig()
 {
 	string config;
-	day--;
-
-	config += to_string(days_[day].getAlarmTime());
-	config += to_string(days_[day].getCoffeeTime());
-	config += to_string(days_[day].getLampTime());
-	config += to_string(days_[day].getCurtainTime());
+	for (size_t i = 0; i < 7; i++)
+	{
+		config += to_string(days_[i].getAlarmTime());
+		config += to_string(days_[i].getCoffeeTime());
+		config += to_string(days_[i].getLampTime());
+		config += to_string(days_[i].getCurtainTime());
+	}
 
 	return config;
 }
