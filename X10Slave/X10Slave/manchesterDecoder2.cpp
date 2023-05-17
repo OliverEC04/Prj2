@@ -23,19 +23,23 @@ char manchesterDecoder2(char addressByte, char dataByte)
 	{
 		for (char i = 0; i < 4; i++)
 		{
-			if ((dataByte |= 0b00000010) && (dataByte &= 0b11111110)) // if 10
+			char checkByte = dataByte & (0b00000011 << i * 2);
+			
+			checkByte = checkByte >> (i * 2);
+			
+			if ((checkByte | 0b00000010 == 0xFF) && (checkByte & 0b00000001 == 0)) // if 10
 			{
+				writeAllLEDs(0b01010101);
 				decoded &= 0b11111110 << i; // add 0 to end
 			}
-			else if ((dataByte &= 0b11111101) && (dataByte |= 0b00000001)) // if 01
+			else if ((checkByte & 0b00000010 == 0xFF) && (checkByte | 0b00000001 == 0)) // if 01
 			{
+				writeAllLEDs(0xFF);
 				decoded |= 0b00000001 << i; // add 1 to end
 			}
 			
-			dataByte >> 2; // Move 2 right
-			
-			writeAllLEDs(dataByte);
-			_delay_ms(2000);
+			//writeAllLEDs(decoded);
+			_delay_ms(1000);
 		}
 	}
 	
@@ -50,7 +54,7 @@ int main(void)
 	
 	myDecode = manchesterDecoder2(0b00000111, 0b10100101);
 	
-	writeAllLEDs(myDecode);
+	//writeAllLEDs(myDecode);
 	
 	return 0;
 }
