@@ -9,6 +9,9 @@
 #include <avr/interrupt.h>
 #define F_CPU 16000000
 #include <util/delay.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "led.h"
 #include "ManchesterDecoder.h"
@@ -28,38 +31,51 @@ int main(void)
 	//Initiating interrupt
 	initLEDport();
 	
+	// Init switches
+	DDRA = 0;
+	
 	//Temparray
-	int tempArray[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	char tempArray[12] = {1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1};
 	
 	//Main-loop: Toggle LED7 every second
     while (1) 
     {
-		toggleLED(7);
-		_delay_ms(1000);
 		
-		if(PINB == 0b10000000)
+		//_delay_ms(1000);
+		
+		if(PINA == 0b10000000 || true)
 		{
 			for(int i = 0; i < 12; i++)
 			{
-				if(PINB == 0b10000000)
+				if(PINA == 0b10000000)
 				{
-					tempArray[i] = 1;
+					//tempArray[i] = 1;
 				} 
 				else
 				{
-					tempArray[i] = 0;
+					//tempArray[i] = 0;
 				}
 				
 				intTrigger = false;
 				
-				while(intTrigger == false)
+				if(intTrigger == false)
 				{
 					
 				}
 				
-				manchester_decoder(tempArray, 12, 4);
+				//toggleLED(7);
+				char* decoded = manchester_decoder(tempArray, 12, 4);
+				char* myStr;
 				
-				_delay_us(500);
+				for (int i = 0; i < 4; i++)
+				{
+					char appChar = decoded[i];
+					strncat(myStr, &appChar, 1);
+				}
+				
+				writeAllLEDs(char(atoi(myStr)));
+				
+				//_delay_us(5000);
 			}
 		}
     }
