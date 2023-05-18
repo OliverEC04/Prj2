@@ -88,14 +88,12 @@ int main(void)
 	
 	//Main-loop: Toggle LED7 every second
     while (1) 
-    {
-		_delay_ms(1000);
-		
-		if(PINA == 0b10000000)
+    {		
+		if(PINL == 0b01000000)
 		{
 			for(int i = 0; i < 12; i++)
 			{
-				if(PINA == 0b10000000)
+				if(PINL == 0b01000000)
 				{
 					if(addressByte < 8)
 					{
@@ -122,7 +120,7 @@ int main(void)
 				
 				decoded = manchesterDecoder2(addressByte, dataByte);
 				
-				_delay_us(5000);
+				_delay_us(500);
 			}
 		}
 		
