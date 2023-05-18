@@ -26,22 +26,23 @@ volatile bool intTrigger = false;
 char manchesterDecoder2(char encodedByte)
 {
 	char decodedByte = 0;
+	char checkByte;
 
 	for (char i = 0; i < 4; i++)
 	{
-		char checkByte = encodedByte >> (i * 2); // Shift 2 right, since we only check the two right bits
-		checkByte &= 0b00000011; // Set all other bits than the two left to 0
+		checkByte = (encodedByte << (i * 2)); // Shift 2 right, since we only check the two right bits
+		checkByte &= 0b11000000; // Set all other bits than the two left to 0
 			
-		if (checkByte == 0b00000010) // if 10 (1)
+		if (checkByte == 0b10000000) // if 10 (1)
 		{
 			// Shift 1 left, and add 1 on right
-			decodedByte = decodedByte << i;
+			decodedByte = (decodedByte << 1);
 			decodedByte |= 0b00000001;
 		}
-		else if (checkByte == 0b00000001) // if 01 (0)
+		else if (checkByte == 0b01000000) // if 01 (0)
 		{
 			// Shift 1 left
-			decodedByte = decodedByte << 1;
+			decodedByte = (decodedByte << 1);
 		}
 		else
 		{
@@ -77,46 +78,41 @@ int main(void)
 	
 	char decoded;
 	int counter = 0;
+	char testl = 0;
 	
 	//Main-loop: Toggle LED7 every second
     while (1)
     {
-		writeAllLEDs(~readByte);
-		if (counter % 2 == 0) toggleLED(7);
-		if (PINL == 0b01000000)
+		if ((PINL & 0b01000000) == 0b01000000)
 		{
-			readByte = readByte << 1;
-			readByte |= 1;
-		}
-		else if (PINL == 0b00000000)
-		{
-			readByte = readByte << 1;
+			readByte = (readByte << 1);
+			readByte |= 0b00000001;
 		}
 		else
 		{
-			// Fejl
+			readByte = (readByte << 1);
+		}
+		//else if ((PINL | 0b10111111) == 0b10111111)
+		//{
+			//readByte = (readByte << 1);
+		//}
+		
+		if ((readByte & 0b00001110) == 0b00001110)
+		{
+			startSeq = true;
+			readByte = 0;
+			counter = -1;
 		}
 		
-		counter++;
-		
-		if (counter == 4) // Når startbit er læst
+		if (startSeq && counter >= 7)
 		{
-			if (readByte == 0b00001110)
-			{
-				startSeq = true;
-				readByte = 0;
-			}
-			else
-			{
-				// Fejl
-			}
-		}
-		else if (counter >= 12 && startSeq) // Når det efterfølgende byte er læst
-		{
+			//writeAllLEDs(readByte);
+			//_delay_ms(2000);
 			decoded = manchesterDecoder2(readByte);
 			//writeAllLEDs(decoded);
+			//_delay_ms(2000);
 			
-			if (decoded & 0b00001000 == 0b00001000) // Tjek addresse bit
+			if ((decoded & 0b00001000) == 0b00001000) // Tjek addresse bit
 			{
 				modtager1.recieveCommand1(decoded);
 			}
@@ -126,18 +122,16 @@ int main(void)
 			}
 			
 			startSeq = false;
-			counter = 0;
+			counter = -1;
 			readByte = 0;
 		}
-		else if (counter > 12)
-		{
-			counter = 0;
-		}
+		
+		counter++;
 		
 		intTrigger = false;
 		while(!intTrigger)
 		{}
-			
+		
 		_delay_us(500);
     }
 }
