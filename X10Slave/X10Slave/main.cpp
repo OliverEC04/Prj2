@@ -69,6 +69,7 @@ int main(void)
 	
 	// Temp bytes
 	char readByte = 0;
+	bool startSeq = false;
 	
 	//Receiver 1 og 2
 	X10Reciever_1 modtager1(0);
@@ -80,6 +81,8 @@ int main(void)
 	//Main-loop: Toggle LED7 every second
     while (1)
     {
+		writeAllLEDs(~readByte);
+		if (counter % 2 == 0) toggleLED(7);
 		if (PINL == 0b01000000)
 		{
 			readByte = readByte << 1;
@@ -100,6 +103,7 @@ int main(void)
 		{
 			if (readByte == 0b00001110)
 			{
+				startSeq = true;
 				readByte = 0;
 			}
 			else
@@ -107,9 +111,10 @@ int main(void)
 				// Fejl
 			}
 		}
-		else if (counter >= 12) // Når det efterfølgende byte er læst
+		else if (counter >= 12 && startSeq) // Når det efterfølgende byte er læst
 		{
 			decoded = manchesterDecoder2(readByte);
+			//writeAllLEDs(decoded);
 			
 			if (decoded & 0b00001000 == 0b00001000) // Tjek addresse bit
 			{
@@ -120,8 +125,13 @@ int main(void)
 				modtager2.recieveCommand2(decoded);
 			}
 			
+			startSeq = false;
 			counter = 0;
 			readByte = 0;
+		}
+		else if (counter > 12)
+		{
+			counter = 0;
 		}
 		
 		intTrigger = false;
