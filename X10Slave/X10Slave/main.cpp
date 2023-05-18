@@ -72,7 +72,7 @@ int main(void)
 	initLEDport();
 	
 	// Init switches
-	DDRA = 0;
+	DDRL = 0;
 	
 	// Temp bytes
 	//char addressByte = 0b00000111;
