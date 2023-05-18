@@ -74,19 +74,21 @@ void Ui::dayMenu()
 			break;
 
 		case 'f':
-			for (size_t i = 1; i <= 7; i++)
-			{
-				if (!s->Open(3, 9600))
+			
+				if (!s->Open(7, 9600))
 				{
 					cout << "Failed to open port!" << endl;
 				}
 				else
 				{
-					string config = week_.getConfig(i);
-					s->SendData(config.c_str(), 5 * 4);
-					cout << config << endl;
+					string config = week_.getConfig();
+					cout << config;
+					for (size_t i = 0; i < 140; i++)
+					{
+						char temp = config[i];
+						int bytesWritten = s->SendData(&temp, 1);
+					}
 				}
-			}
 			return;
 			break;
 	}
