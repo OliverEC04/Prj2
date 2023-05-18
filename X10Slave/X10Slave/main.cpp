@@ -89,13 +89,11 @@ int main(void)
 	//Main-loop: Toggle LED7 every second
     while (1) 
     {
-		_delay_ms(1000);
-		
-		if(PINA == 0b10000000)
+		if(PINL == 0b01000000)
 		{
 			for(int i = 0; i < 12; i++)
 			{
-				if(PINA == 0b10000000)
+				if(PINL == 0b01000000)
 				{
 					if(addressByte < 8)
 					{
@@ -122,12 +120,18 @@ int main(void)
 				
 				decoded = manchesterDecoder2(addressByte, dataByte);
 				
-				_delay_us(5000);
+				_delay_us(500);
 			}
 		}
 		
-		modtager1.recieveCommand1(decoded);
-		modtager2.recieveCommand2(decoded);
+		if (decoded & 0b00010000 == 0b00010000)
+		{
+			modtager1.recieveCommand1(decoded);	
+		}
+		else
+		{
+			modtager2.recieveCommand2(decoded);	
+		}
     }
 }
 
