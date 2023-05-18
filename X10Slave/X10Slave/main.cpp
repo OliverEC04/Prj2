@@ -19,7 +19,7 @@
 #include "X10Reciever_1.h"
 #include "X10Reciever_2.h"
 
-
+/*
 int main(void)
 {
 	//Initiating interrupt
@@ -63,7 +63,7 @@ int main(void)
 					
 				}
 				
-				//toggleLED(7);
+				toggleLED(7);
 				char* decoded = manchester_decoder(tempArray, 12, 4);
 				char* myStr;
 				
@@ -86,3 +86,6 @@ ISR (INT5_vect)
 {
 	intTrigger = true;	
 }
+
+*/
+
