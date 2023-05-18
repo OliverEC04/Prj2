@@ -23,37 +23,30 @@
 volatile bool intTrigger = false;
 
 
-char manchesterDecoder2(char addressByte, char dataByte)
+char manchesterDecoder2(char encodedByte)
 {
-	char decodedByte = addressByte;
-	
-	if (addressByte == 0b00000111)
+	char decodedByte = 0;
+
+	for (char i = 0; i < 4; i++)
 	{
-		for (char i = 0; i < 4; i++)
-		{
-			char checkByte = dataByte << (i * 2); // Shift 2 left, since we only check the two left bits
-			checkByte &= 0b11000000; // Set all other bits than the two left to 0
+		char checkByte = encodedByte >> (i * 2); // Shift 2 right, since we only check the two right bits
+		checkByte &= 0b00000011; // Set all other bits than the two left to 0
 			
-			if (checkByte == 0b10000000) // if 10 (0)
-			{
-				// Shift 1 left, and add 0 on right
-				decodedByte = decodedByte << 1;
-			}
-			else if (checkByte == 0b01000000) // if 01 (1)
-			{
-				// Shift 1 left, and add 1 on right
-				decodedByte = decodedByte << 1;
-				decodedByte |= 0b00000001;
-			}
-			else
-			{
-				// Invalid number
-			}
+		if (checkByte == 0b00000010) // if 10 (1)
+		{
+			// Shift 1 left, and add 1 on right
+			decodedByte = decodedByte << i;
+			decodedByte |= 0b00000001;
 		}
-	}
-	else
-	{
-		// Wrong address
+		else if (checkByte == 0b00000001) // if 01 (0)
+		{
+			// Shift 1 left
+			decodedByte = decodedByte << 1;
+		}
+		else
+		{
+			// Invalid number
+		}
 	}
 	
 	return decodedByte;
@@ -75,68 +68,72 @@ int main(void)
 	DDRL = 0;
 	
 	// Temp bytes
-	//char addressByte = 0b00000111;
-	//char dataByte = 0b10100101;
-	char addressByte = 0b00000000;
-	char dataByte = 0b00000000;
+	char readByte = 0;
 	
 	//Receiver 1 og 2
 	X10Reciever_1 modtager1(0);
 	X10Reciever_2 modtager2(0);
 	
 	char decoded;
+	int counter = 0;
 	
 	//Main-loop: Toggle LED7 every second
-    while (1) 
+    while (1)
     {
-		if(PINL == 0b01000000)
+		if (PINL == 0b01000000)
 		{
-			for(int i = 0; i < 12; i++)
-			{
-				if(PINL == 0b01000000)
-				{
-					if(addressByte < 8)
-					{
-						addressByte = addressByte << 1;
-						addressByte |= 0b00000001;
-					}
-					
-					dataByte = dataByte << 1;
-					dataByte |= 0b00000001;
-				} 
-				else
-				{
-					dataByte = dataByte << 1;
-				}
-				
-				if (intTrigger)
-				{
-					// IntTrigger aktiv her
-					
-					intTrigger = false;
-				}
-				
-				toggleLED(7);
-				
-				decoded = manchesterDecoder2(addressByte, dataByte);
-				
-				_delay_us(500);
-			}
+			readByte = readByte << 1;
+			readByte |= 1;
 		}
-		
-		if (decoded & 0b00010000 == 0b00010000)
+		else if (PINL == 0b00000000)
 		{
-			modtager1.recieveCommand1(decoded);	
+			readByte = readByte << 1;
 		}
 		else
 		{
-			modtager2.recieveCommand2(decoded);	
+			// Fejl
 		}
+		
+		counter++;
+		
+		if (counter == 4) // Når startbit er læst
+		{
+			if (readByte == 0b00001110)
+			{
+				readByte = 0;
+			}
+			else
+			{
+				// Fejl
+			}
+		}
+		else if (counter >= 12) // Når det efterfølgende byte er læst
+		{
+			decoded = manchesterDecoder2(readByte);
+			
+			if (decoded & 0b00001000 == 0b00001000) // Tjek addresse bit
+			{
+				modtager1.recieveCommand1(decoded);
+			}
+			else
+			{
+				modtager2.recieveCommand2(decoded);
+			}
+			
+			counter = 0;
+			readByte = 0;
+		}
+		
+		intTrigger = false;
+		while(!intTrigger)
+		{}
+			
+		_delay_us(500);
     }
 }
 
 //Interrupt service rutine for INT5
 ISR (INT5_vect)
 {
-	intTrigger = true;	
+	intTrigger = true;
 }
