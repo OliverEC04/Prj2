@@ -1,30 +1,27 @@
 #include "X10Reciever_1.h"
 #include "LED.h"
 
-X10Reciever_1::X10Reciever_1(int alarm, int curtain, int light)
+X10Reciever_1::X10Reciever_1(int decodedByte)
 {
-	command_1[0] = (alarm == 1 || alarm == 0 ? alarm : 0);
-	command_1[1] = (curtain == 1 || curtain == 0 ? curtain : 0);
-	command_1[2] = (light == 1 || light == 0 ? light : 0);
-	command_1[3] = 0;
-
-	recieveCommand1(command_1, 4);
+	command_1_ = decodedByte;
+	
+	//recieveCommand1(command_1_);
 }
 
-void X10Reciever_1::recieveCommand1(int command1[], const int size1)
+void X10Reciever_1::recieveCommand1(char decodedByte)
 {
-	for (int i = 0; i < size1; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		if (command_1[i] = 1)
+		if (decodedByte & 0b00000001 == 0b00000001)
 		{
-			alarmOn();										//Eventuelt lave en idle og toggle version for de forskellige komponenter
+			alarmOn();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
 		}
 		else
 		{
 			alarmOff();
 		}
 
-		if (command_1[i] = 1)
+		if (decodedByte & 0b00000010 == 0b00000010)
 		{
 			rollUp();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
 		}
@@ -33,9 +30,9 @@ void X10Reciever_1::recieveCommand1(int command1[], const int size1)
 			rollDown();
 		}
 
-		if (command_1[i] = 1)
+		if (decodedByte & 0b00000100 == 0b00000100)
 		{
-			lightOn();										//Eventuelt lave en idle og toggle version for de forskellige komponenter
+			lightOn();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
 		}
 		else
 		{
