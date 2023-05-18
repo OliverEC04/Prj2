@@ -88,7 +88,7 @@ int main(void)
 	
 	//Main-loop: Toggle LED7 every second
     while (1) 
-    {		
+    {
 		if(PINL == 0b01000000)
 		{
 			for(int i = 0; i < 12; i++)
@@ -124,8 +124,14 @@ int main(void)
 			}
 		}
 		
-		modtager1.recieveCommand1(decoded);
-		modtager2.recieveCommand2(decoded);
+		if (decoded & 0b00010000 == 0b00010000)
+		{
+			modtager1.recieveCommand1(decoded);	
+		}
+		else
+		{
+			modtager2.recieveCommand2(decoded);	
+		}
     }
 }
 

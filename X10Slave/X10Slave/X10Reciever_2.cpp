@@ -10,13 +10,17 @@ X10Reciever_2::X10Reciever_2(int decodedByte)
 
 void X10Reciever_2::recieveCommand2(char decodedByte)
 {
-	if (decodedByte & 0b00001000 == 0b00001000)
+	decodedByte &= 0b00001111;
+	
+	switch(decodedByte)
 	{
-		startCoffee();
-	}
-	else
-	{
-		stopCoffee();
+		case 0b00000110:
+			startCoffee();
+			break;
+			
+		case 0b00000111:
+			stopCoffee();
+			break;
 	}
 }
 

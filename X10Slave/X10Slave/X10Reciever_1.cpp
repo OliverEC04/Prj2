@@ -10,36 +10,33 @@ X10Reciever_1::X10Reciever_1(int decodedByte)
 
 void X10Reciever_1::recieveCommand1(char decodedByte)
 {
-	for (int i = 0; i < 4; i++)
+	decodedByte &= 0b00000111;
+	
+	switch(decodedByte)
 	{
-		if (decodedByte & 0b00000001 == 0b00000001)
-		{
-			alarmOn();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
-		}
-		else
-		{
+		case 0b00000110:
+			alarmOn();
+			break;
+			
+		case 0b00000111:
 			alarmOff();
-		}
-
-		if (decodedByte & 0b00000010 == 0b00000010)
-		{
-			rollUp();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
-		}
-		else
-		{
-			rollDown();
-		}
-
-		if (decodedByte & 0b00000100 == 0b00000100)
-		{
-			lightOn();											//Eventuelt lave en idle og toggle version for de forskellige komponenter
-		}
-		else
-		{
+			break;
+			
+		case 0b00000100:
+			lightOn();
+			break;
+		
+		case 0b00000101:
 			lightOff();
-		}
-
-		break;
+			break;
+		
+		case 0b00000000:
+			rollUp();
+			break;
+		
+		case 0b00000001:
+			rollDown();
+			break;
 	}
 }
 
