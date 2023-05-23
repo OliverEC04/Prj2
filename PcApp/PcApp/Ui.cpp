@@ -75,7 +75,7 @@ void Ui::dayMenu()
 
 		case 'f':
 			
-				if (!s->Open(7, 9600))
+				if (!s->Open(8, 9600))
 				{
 					cout << "Failed to open port!" << endl;
 				}
