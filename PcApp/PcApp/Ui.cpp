@@ -74,21 +74,7 @@ void Ui::dayMenu()
 			break;
 
 		case 'f':
-			
-				if (!s->Open(8, 9600))
-				{
-					cout << "Failed to open port!" << endl;
-				}
-				else
-				{
-					string config = week_.getConfig();
-					cout << config;
-					for (size_t i = 0; i < 140; i++)
-					{
-						char temp = config[i];
-						int bytesWritten = s->SendData(&temp, 1);
-					}
-				}
+			updateConfiguration();
 			return;
 			break;
 	}
@@ -259,6 +245,26 @@ void Ui::inputMenu()
 	{
 		cout << inputStrings_[i] << endl;
 	}
+}
+
+void Ui::updateConfiguration()
+{
+	string config = week_.getConfig();
+
+	if (!s->Open(8, 9600))
+	{
+		cout << "Failed to open port!" << endl;
+	}
+	else
+	{
+		for (size_t i = 0; i < 140; i++)
+		{
+			char temp = config[i];
+			int bytesWritten = s->SendData(&temp, 1);
+		}
+	}
+
+	cout << config;
 }
 
 int concatInts(int sel, int hrs, int min)
