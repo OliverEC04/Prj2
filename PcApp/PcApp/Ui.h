@@ -22,6 +22,7 @@ public:
 
 private:
 	Week week_;
+	void updateConfiguration();
 	int menuSelector_ = 0;
 	int daySelector_ = 0;
 	int timeSelector_ = 0;
