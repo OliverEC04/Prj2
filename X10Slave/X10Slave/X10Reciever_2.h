@@ -4,14 +4,14 @@
 class X10Reciever_2
 {
 	public:
-	X10Reciever_2(int coffeemachine);
-	void recieveCommand2(int command2[], const int size2);
+	X10Reciever_2(int decodedByte = 0);
+	void recieveCommand2(char decodedByte);
 
 	void startCoffee();
 	void stopCoffee();
 
 	private:
-	int command_2[SIZE_2];
+	int command_2_;
 }; //Slave2
 
 

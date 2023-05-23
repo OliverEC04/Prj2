@@ -1,26 +1,26 @@
 #include "X10Reciever_2.h"
 #include "LED.h"
 
-X10Reciever_2::X10Reciever_2(int coffeemachine)
+X10Reciever_2::X10Reciever_2(int decodedByte)
 {
-	command_2[0] = 0;
-	command_2[1] = 0;
-	command_2[2] = 0;
-	command_2[3] = (coffeemachine == 1 || coffeemachine == 0 ? coffeemachine : 0);
-
-	recieveCommand2(command_2, 4);
+	command_2_ = decodedByte;
+	
+	//recieveCommand2(command_2_);
 }
 
-void X10Reciever_2::recieveCommand2(int command2[], const int size2)
+void X10Reciever_2::recieveCommand2(char decodedByte)
 {
-	if (command_2[3] == 1)
+	decodedByte &= 0b00001111;
+	
+	switch(decodedByte)
 	{
-		//startCoffee();												//Eventuelt lave en idle og toggle version for de forskellige komponenter
-	}
-	else
-	{
-		//stopCoffee();													//Eventuelt lave en idle og toggle version for de forskellige komponenter
-
+		case 0b00000110:
+			startCoffee();
+			break;
+			
+		case 0b00000111:
+			stopCoffee();
+			break;
 	}
 }
 
