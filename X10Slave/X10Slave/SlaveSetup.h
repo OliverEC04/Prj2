@@ -22,7 +22,7 @@ void setUpInterruptZeroCross()
 	EIMSK |= 0b00100000;														
 	
 	//Initiering af port B, pin 11 som output til ZeroCross
-	DDRB |= 0b00100000;															
+	//DDRB |= 0b00100000;															
 }
 
 #endif /* SLAVESETUP_H_ */
