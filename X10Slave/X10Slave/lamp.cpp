@@ -10,7 +10,7 @@
 void initLamp()
 {
 	//Initierer lamp til Port E, ben 3 (PE3)
-	DDRE = 0xFF;
+	DDRE |= 0b00001000;
 	//No prescaling 
 	TCCR3B |= 0b00000001;
 	//Clear on compare match
