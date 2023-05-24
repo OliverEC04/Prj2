@@ -31,19 +31,19 @@ private:
 	int inputMin_;
 	bool saveState_ = false;
 	string dayStrings_[DAYS] = {
-		">Monday",
-		" Tuesday",
-		" Wednesday",
-		" Thursday",
-		" Friday",
-		" Saturday",
-		" Sunday"
+		">Monday       ",
+		" Tuesday      ",
+		" Wednesday    ",
+		" Thursday     ",
+		" Friday       ",
+		" Saturday     ",
+		" Sunday       "
 	};
 	string timeStrings_[TIMES] = {
-		">Alarm Time",
-		" Coffee Time",
-		" Lamp Time",
-		" Curtain Time"
+		">Alarm Time   ",
+		" Coffee Time  ",
+		" Lamp Time    ",
+		" Curtain Time "
 	};
 	string inputStrings_[INPUTS] = {
 		">Save",
