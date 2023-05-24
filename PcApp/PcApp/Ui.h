@@ -23,6 +23,10 @@ public:
 private:
 	Week week_;
 	void updateConfiguration();
+	void disableSettingDay();
+	void disableSettingTime();
+	void removeDisableDay();
+	void removeDisableTime();
 	int menuSelector_ = 0;
 	int daySelector_ = 0;
 	int timeSelector_ = 0;
@@ -31,19 +35,19 @@ private:
 	int inputMin_;
 	bool saveState_ = false;
 	string dayStrings_[DAYS] = {
-		">Monday       ",
-		" Tuesday      ",
-		" Wednesday    ",
-		" Thursday     ",
-		" Friday       ",
-		" Saturday     ",
-		" Sunday       "
+		">Monday               ",
+		" Tuesday              ",
+		" Wednesday            ",
+		" Thursday             ",
+		" Friday               ",
+		" Saturday             ",
+		" Sunday               "
 	};
 	string timeStrings_[TIMES] = {
-		">Alarm Time   ",
-		" Coffee Time  ",
-		" Lamp Time    ",
-		" Curtain Time "
+		">Alarm Time           ",
+		" Coffee Time          ",
+		" Lamp Time            ",
+		" Curtain Time         "
 	};
 	string inputStrings_[INPUTS] = {
 		">Save",
