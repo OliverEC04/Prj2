@@ -1,5 +1,6 @@
 #pragma once
 #define SIZE_1 4
+#include "lyd.h"
 
 class X10Reciever_1
 {
