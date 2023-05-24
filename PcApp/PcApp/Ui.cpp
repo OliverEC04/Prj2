@@ -63,7 +63,12 @@ void Ui::dayMenu()
 			menuSelector_ = 1;
 
 			system("cls");
-
+			for (size_t i = 0; i < 7; i++)
+			{
+				int pos = dayStrings_[i].find("disabled");
+				dayStrings_[i].replace(pos, 8, "");
+			}
+			
 			timeStrings_[timeSelector_].replace(0, 1, ">");
 			for (size_t i = 0; i < TIMES; i++)
 			{
@@ -75,6 +80,14 @@ void Ui::dayMenu()
 
 		case 'f':
 			updateConfiguration();
+			return;
+			break;
+		case 'x':
+			dayStrings_[daySelector_]+="disabled";
+			week_.days_[daySelector_].setAlarmTime(99999);
+			week_.days_[daySelector_].setCoffeeTime(99999);
+			week_.days_[daySelector_].setLampTime(99999);
+			week_.days_[daySelector_].setCurtainTime(99999);
 			return;
 			break;
 	}
