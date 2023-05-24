@@ -168,6 +168,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lamp.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lamp.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Led.h">
       <SubType>compile</SubType>
     </Compile>

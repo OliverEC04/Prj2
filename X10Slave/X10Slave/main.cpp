@@ -13,6 +13,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "lamp.h"
+#include "lyd.h"
 #include "led.h"
 #include "SlaveSetup.h"
 #include "X10Reciever_1.h"
@@ -68,6 +70,9 @@ int main(void)
 	//Initiating sound
 	initLyd();
 	
+	//Initiating lamp
+	initLamp();
+	
 	// Init switches
 	DDRL = 0;
 	
@@ -82,6 +87,9 @@ int main(void)
 	char decoded;
 	int counter = 0;
 	char testl = 0;
+	
+	//Lamp test
+	fadeLampOn(50);
 	
 	//Main-loop: Toggle LED7 every second
     while (1)
