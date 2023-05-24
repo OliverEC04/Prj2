@@ -251,7 +251,7 @@ void Ui::updateConfiguration()
 {
 	string config = week_.getConfig();
 
-	if (!s->Open(8, 9600))
+	if (!s->Open(3, 9600))
 	{
 		cout << "Failed to open port!" << endl;
 	}

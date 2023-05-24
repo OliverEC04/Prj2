@@ -43,6 +43,7 @@ void X10Reciever_1::recieveCommand1(char decodedByte)
 void X10Reciever_1::alarmOn()
 {
 	turnOnLED(0);
+	playAlarmSound();
 }
 
 void X10Reciever_1::alarmOff()

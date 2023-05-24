@@ -65,6 +65,9 @@ int main(void)
 	//Initiating interrupt
 	initLEDport();
 	
+	//Initiating sound
+	initLyd();
+	
 	// Init switches
 	DDRL = 0;
 	
