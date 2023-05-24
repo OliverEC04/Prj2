@@ -82,14 +82,13 @@ int main(void)
 	
 	//Receiver 1 og 2
 	X10Reciever_1 modtager1(0);
-	X10Reciever_2 modtager2(0);
+	//X10Reciever_2 modtager2(0);
 	
 	char decoded;
 	int counter = 0;
 	char testl = 0;
 	
-	//Lamp test
-	fadeLampOn(50);
+	
 	
 	//Main-loop: Toggle LED7 every second
     while (1)
@@ -129,7 +128,7 @@ int main(void)
 			}
 			else
 			{
-				modtager2.recieveCommand2(decoded);
+				//modtager2.recieveCommand2(decoded);
 			}
 			
 			startSeq = false;

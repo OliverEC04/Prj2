@@ -66,7 +66,7 @@ void X10Reciever_1::rollDown()
 void X10Reciever_1::lightOn()
 {
 	turnOnLED(2);
-	fadeLampOn(100);
+	fadeLampOn(30);
 }
 
 void X10Reciever_1::lightOff()
