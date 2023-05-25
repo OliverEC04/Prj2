@@ -216,8 +216,10 @@ void Ui::inputMenu()
 
 		int timeSaved = concatInts(daySelector_ + 1, inputHrs_, inputMin_);
 
-		switch (timeSelector_)
+		if (inputSelector_ == 0)
 		{
+			switch (timeSelector_)
+			{
 			case 0:
 				week_.days_[daySelector_].setAlarmTime(timeSaved);
 				break;
@@ -233,6 +235,7 @@ void Ui::inputMenu()
 			case 3:
 				week_.days_[daySelector_].setCurtainTime(timeSaved);
 				break;
+			}
 		}
 
 		system("cls");
