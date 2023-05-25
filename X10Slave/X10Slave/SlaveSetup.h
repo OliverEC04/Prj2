@@ -12,8 +12,8 @@
 
 void setUpInterruptZeroCross()
 {
-	//Initiering af port E, pin 3 som input til ZeroCross
-	DDRE = 0;														
+	//Initiering af port E, pin PE5 som input til ZeroCross
+	DDRE &= 0b11011111;
 	
 	//Any edge interrupt for INT5 enabled
 	EICRB |= 0b00000100;														

@@ -100,6 +100,12 @@ int main()
 			runCommand(slave1_gardin_off);
 		}
 		
+		if((~PINA & 0b00000010))
+			runCommand(slave1_buzzer_on);
+			
+		if((~PINA & 0b00000100))
+			runCommand(slave2_kaffe_on);
+		
 		//tjekker hvis nye alarmer skal modtages, eller de nuværende skal overføres
 		if(charReceived){
 			idle = false; //angiv at vi er optaget

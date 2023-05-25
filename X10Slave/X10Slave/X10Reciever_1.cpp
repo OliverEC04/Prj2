@@ -1,5 +1,7 @@
 #include "X10Reciever_1.h"
 #include "LED.h"
+#include "lamp.h"
+#include "lyd.h"
 
 X10Reciever_1::X10Reciever_1(int decodedByte)
 {
@@ -64,9 +66,11 @@ void X10Reciever_1::rollDown()
 void X10Reciever_1::lightOn()
 {
 	turnOnLED(2);
+	fadeLampOn(30);
 }
 
 void X10Reciever_1::lightOff()
 {
 	turnOffLED(2);
+	lampOff();
 }

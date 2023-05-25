@@ -63,11 +63,8 @@ void Ui::dayMenu()
 			menuSelector_ = 1;
 
 			system("cls");
-			for (size_t i = 0; i < 7; i++)
-			{
-				int pos = dayStrings_[i].find("disabled");
-				dayStrings_[i].replace(pos, 8, "");
-			}
+
+			removeDisableDay();
 			
 			timeStrings_[timeSelector_].replace(0, 1, ">");
 			for (size_t i = 0; i < TIMES; i++)
@@ -83,12 +80,7 @@ void Ui::dayMenu()
 			return;
 			break;
 		case 'x':
-			dayStrings_[daySelector_]+="disabled";
-			week_.days_[daySelector_].setAlarmTime(99999);
-			week_.days_[daySelector_].setCoffeeTime(99999);
-			week_.days_[daySelector_].setLampTime(99999);
-			week_.days_[daySelector_].setCurtainTime(99999);
-			return;
+			disableSettingDay();
 			break;
 	}
 
@@ -135,6 +127,8 @@ void Ui::timeMenu()
 			cout << dayStrings_[i] << endl;
 		}
 
+		removeDisableTime();
+
 		return;
 		break;
 
@@ -144,7 +138,12 @@ void Ui::timeMenu()
 
 		system("cls");
 
+		removeDisableTime();
+
 		return;
+		break;
+	case 'x':
+		disableSettingTime();
 		break;
 	}
 
@@ -217,8 +216,10 @@ void Ui::inputMenu()
 
 		int timeSaved = concatInts(daySelector_ + 1, inputHrs_, inputMin_);
 
-		switch (timeSelector_)
+		if (inputSelector_ == 0)
 		{
+			switch (timeSelector_)
+			{
 			case 0:
 				week_.days_[daySelector_].setAlarmTime(timeSaved);
 				break;
@@ -234,6 +235,7 @@ void Ui::inputMenu()
 			case 3:
 				week_.days_[daySelector_].setCurtainTime(timeSaved);
 				break;
+			}
 		}
 
 		system("cls");
@@ -278,6 +280,55 @@ void Ui::updateConfiguration()
 	}
 
 	cout << config;
+}
+
+void Ui::disableSettingDay()
+{
+	dayStrings_[daySelector_].replace(14, 8, "disabled");
+	week_.days_[daySelector_].setAlarmTime(99999);
+	week_.days_[daySelector_].setCoffeeTime(99999);
+	week_.days_[daySelector_].setLampTime(99999);
+	week_.days_[daySelector_].setCurtainTime(99999);
+}
+
+void Ui::disableSettingTime()
+{
+	timeStrings_[timeSelector_].replace(14, 8, "disabled");
+	switch (timeSelector_)
+	{
+	case 0:
+		week_.days_[daySelector_].setAlarmTime(99999);
+		break;
+	case 1:
+		week_.days_[daySelector_].setCoffeeTime(99999);
+		break;
+	case 2:
+		week_.days_[daySelector_].setLampTime(99999);
+		break;
+	case 3:
+		week_.days_[daySelector_].setCurtainTime(99999);
+		break;
+	}
+}
+
+void Ui::removeDisableDay()
+{
+	for (size_t i = 0; i < 7; i++)
+	{
+		int pos = dayStrings_[i].find("disabled");
+		if (pos > 0)
+			dayStrings_[i].replace(pos, 8, "        ");
+	}
+}
+
+void Ui::removeDisableTime()
+{
+	for (size_t i = 0; i < 4; i++)
+	{
+		int pos = timeStrings_[i].find("disabled");
+		if (pos > 0)
+			timeStrings_[i].replace(pos, 8, "        ");
+	}
 }
 
 int concatInts(int sel, int hrs, int min)
