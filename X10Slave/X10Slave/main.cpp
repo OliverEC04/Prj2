@@ -81,8 +81,8 @@ int main(void)
 	bool startSeq = false;
 	
 	//Receiver 1 og 2
-	//X10Reciever_1 modtager1(0);
-	X10Reciever_2 modtager2(0);
+	X10Reciever_1 modtager1(0);
+	//X10Reciever_2 modtager2(0);
 	
 	char decoded;
 	int counter = 0;
@@ -124,11 +124,11 @@ int main(void)
 			
 			if ((decoded & 0b00001000) == 0b00001000) // Tjek addresse bit
 			{
-				//modtager1.recieveCommand1(decoded);
+				modtager1.recieveCommand1(decoded);
 			}
 			else
 			{
-				modtager2.recieveCommand2(decoded);
+				//modtager2.recieveCommand2(decoded);
 			}
 			
 			startSeq = false;
