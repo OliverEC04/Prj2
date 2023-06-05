@@ -189,7 +189,7 @@
     <Compile Include="main.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="manchesterDecoder2.cpp">
+    <Compile Include="manchesterDecoder2.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="X10Reciever_1.cpp">

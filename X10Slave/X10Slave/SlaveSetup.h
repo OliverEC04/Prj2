@@ -13,7 +13,7 @@
 void setUpInterruptZeroCross()
 {
 	//Initiering af port E, pin PE5 som input til ZeroCross
-	DDRE = 0;														
+	DDRE &= 0b11011111;
 	
 	//Any edge interrupt for INT5 enabled
 	EICRB |= 0b00000100;														
@@ -22,7 +22,7 @@ void setUpInterruptZeroCross()
 	EIMSK |= 0b00100000;														
 	
 	//Initiering af port B, pin 11 som output til ZeroCross
-	DDRB |= 0b00100000;															
+	//DDRB |= 0b00100000;															
 }
 
 #endif /* SLAVESETUP_H_ */
