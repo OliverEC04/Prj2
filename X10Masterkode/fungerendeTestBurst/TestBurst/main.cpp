@@ -62,19 +62,19 @@ ISR(TIMER2_COMPA_vect){//SCL-taeller 100 kHz
 int main()	
 {
 	//denne blok kan in og ud-kommenteres for at påvise at hukommelsen er gemt.
-	int testSettings[7][4];
-	for(int i = 0; i < 7; i++){
-		for(int j = 0; j < 4; j++){
-			testSettings[i][j] = 99999;
-		}
-	}
-	testSettings[2][0] = 31257;
-	testSettings[2][1] = 31258;
-	testSettings[2][2] = 31259;
-	testSettings[2][3] = 31300;
+	//int testSettings[7][4];
+	//for(int i = 0; i < 7; i++){
+		//for(int j = 0; j < 4; j++){
+			//testSettings[i][j] = 99999;
+		//}
+	//}
+	//testSettings[2][0] = 31257;
+	//testSettings[2][1] = 31258;
+	//testSettings[2][2] = 31259;
+	//testSettings[2][3] = 31300;
 	//initiering
-	
-	writeAlarmsEEPROM(testSettings);
+	//
+	//writeAlarmsEEPROM(testSettings);
 	
 	readAlarmsEEPROM(alarmSettings); // læs alarmer fra memory. OBS tjek om allerede skrevet - overskriv med 99999/00000 for at nulstille
 	
@@ -99,6 +99,9 @@ int main()
 			//_delay_us(50);
 			runCommand(slave1_gardin_off);
 		}
+		//Test af EEPROM
+		//if(alarmSettings[0][0] == 12345)
+			//PORTB |= 0xFF;
 		
 		if((~PINA & 0b00000010))
 			runCommand(slave1_buzzer_on);

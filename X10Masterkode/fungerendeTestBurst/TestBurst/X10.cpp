@@ -20,7 +20,7 @@ volatile bool idle = true; //angiver om vi er igang med at burste
 
 volatile uint8_t alarmStatus = 0; //hver bit representerer om en kommando er blevet kørt i dette minut. 
 
-volatile int currentTime = 31533; // variabel til at tiden DHHMM 
+volatile int currentTime = 41504; // variabel til at tiden DHHMM 
 
 // evt kan disse assignments smides ind i main for overskueligheden
 int coffeeTime = 0; // tiden kaffen skal slukkes(minutter) - bliver aldrig 0, mindst 10000
