@@ -20,7 +20,7 @@ volatile bool idle = true; //angiver om vi er igang med at burste
 
 volatile uint8_t alarmStatus = 0; //hver bit representerer om en kommando er blevet kørt i dette minut. 
 
-volatile int currentTime = 31533; // variabel til at tiden DHHMM 
+volatile int currentTime = 40834; // variabel til at tiden DHHMM 
 
 // evt kan disse assignments smides ind i main for overskueligheden
 int coffeeTime = 0; // tiden kaffen skal slukkes(minutter) - bliver aldrig 0, mindst 10000
@@ -53,7 +53,7 @@ void setupX10()
 	TIMSK1 |= (1 << OCIE1A);// Enable compare match interrupt
 	
 	
-	//EL-net interrupt initialisering
+	//zerocross interrupt initialisering
 	DDRD &= ~(1 << PD2); // set PD2 som indgang
 	EIMSK |= 0b00000100; //enable interrupt 2
 	EICRA |= 0b00010000; // enable any edge trigger
@@ -68,7 +68,7 @@ void sendBurst() //sender burst i 1 ms
 {
 	burstEnabled = true;
 	_delay_us(340);//prøvet mig frem til, har ca 1 ms varighed
-	burstEnabled = false;
+	burstEnabled = false;	
 }
 
 void runCommand(int* command)//sender kommando
@@ -76,9 +76,7 @@ void runCommand(int* command)//sender kommando
 	idle = false; //angiv at vi er optaget
 	
 	intTrigger = false; // vent på næste edge fra firkantsignal
-	while(!intTrigger)
-	{
-	}
+	while(!intTrigger){}
 
 	for(int i = 0; i < 12; i++) //gennemløb givne kommando
 	{
@@ -87,9 +85,7 @@ void runCommand(int* command)//sender kommando
 			sendBurst();
 		}
 		intTrigger = false; // vent på næste edge
-		while(!intTrigger)
-		{
-		}
+		while(!intTrigger){}
 	}
 
 	idle = true; //færdig med at køre kommando
@@ -103,7 +99,7 @@ void chooseCommand(int res){
 	switch (res)
 	{
 		case 1:
-			if(!(alarmStatus & 0b00000001)){
+			if(!(alarmStatus & 0b00000001)){ // tjek om valgte kommando allerede er kørt dette minut
 				runCommand(slave1_buzzer_on); //kør valgt kommando (med resultat fra checkTime(currentTime))
 				alarmStatus |= 0b00000001;	//sæt status bit'et for kommandoen
 				buzzerTime = secCount + buzzerDelay;

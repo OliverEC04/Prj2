@@ -8,7 +8,6 @@
 #include "X10.h"
 #include "UART.h"
 #include "Alarms.h"
-#include "RTC.h"
 #include "clock.h"
 #include "DE2.h"
 
@@ -54,72 +53,32 @@ ISR(INT2_vect){//læser firkantssignal
 	intTrigger = true; //angiver modtaget any-edge
 }
 
-ISR(TIMER2_COMPA_vect){//SCL-taeller 100 kHz
-	toggleSCL();
-}
-
 
 int main()	
-{
-	//denne blok kan in og ud-kommenteres for at påvise at hukommelsen er gemt.
-	int testSettings[7][4];
-	for(int i = 0; i < 7; i++){
-		for(int j = 0; j < 4; j++){
-			testSettings[i][j] = 99999;
-		}
-	}
-	testSettings[2][0] = 31257;
-	testSettings[2][1] = 31258;
-	testSettings[2][2] = 31259;
-	testSettings[2][3] = 31300;
-	//initiering
-	
-	writeAlarmsEEPROM(testSettings);
-	
+{	//initiering
 	readAlarmsEEPROM(alarmSettings); // læs alarmer fra memory. OBS tjek om allerede skrevet - overskriv med 99999/00000 for at nulstille
-	
-	sei();
-	//RTCsetup(); //setup RTC
-	//currentTime = I2CreadTime(); // læs tiden fra RTC
+	sei();//global enable interrupts
 	timerClockSetup(); //setup ur 
 	setupX10(); //setup X10-buzzer
 	InitUART(9600,8, 1);//baudrate 9600 std-uart, 8-databit, ingen paritet
-	initLyd();
-	//PORTB = 0;
-	sei();
-	
+	initLyd(); // init buzzeren
 	
 	while(1){
 		if(checkReset()){ //tjek om der er trykket på resetknappen
 			runCommand(slave1_buzzer_off);//kør alle off-kommandoer
-			//_delay_us(50);
 			runCommand(slave2_kaffe_off);
-			//_delay_us(50);
 			runCommand(slave1_lys_off);
-			//_delay_us(50);
 			runCommand(slave1_gardin_off);
 		}
-		
-		if((~PINA & 0b00000010))
-			runCommand(slave1_buzzer_on);
-			
-		if((~PINA & 0b00000100))
-			runCommand(slave2_kaffe_on);
 		
 		//tjekker hvis nye alarmer skal modtages, eller de nuværende skal overføres
 		if(charReceived){
 			idle = false; //angiv at vi er optaget
-			serialReadAlarms(); //modtag alarmer fra PC via UART, skriver til alarmSettings
+			serialReadAlarms(); //modtag alarmer fra pc via uart, skriver til alarmsettings
 			
-			writeAlarmsEEPROM(alarmSettings); // skriv til EEPROM via alarm
+			writeAlarmsEEPROM(alarmSettings); // skriv til eeprom via alarm
 			idle = true; 
 			charReceived = false;
-			/*for(int i = 0; i < 7; i++){
-				for(int j = 0; j < 4; j++){
-					PORTB = alarmSettings[i][j];
-					_delay_ms(1000);
-				}
-			}*/
 		}
 		if(minTrigger){//tjek om der er gået et minut
 			minTrigger = false;
@@ -127,18 +86,9 @@ int main()
 			alarmStatus = 0; // reset alarmstatus så alarmer kan køres igen.
 		}
 		//tjek alarmer
-		if(idle && (alarmStatus << 4) != 0b11110000){ //hvis alle ON-alarmer er kørt dette minut behøves der ikke tjekkes for flere alarmer.
-			chooseCommand(checkTime(currentTime)); //tjek om currentTime passer med nogle af alarmerne, og hvis de gør - kør dem
+		if(idle && (alarmStatus << 4) != 0b11110000){ //hvis alle on-alarmer er kørt dette minut behøves der ikke tjekkes for flere alarmer.
+			chooseCommand(checkTime(currentTime)); //tjek om currenttime passer med nogle af alarmerne, og hvis de gør - kør dem
 		}
-		//tjek om tiden er gået for kaffe eller buzzer
-		/*if(idle && (alarmStatus >> 6) != 0b00000011){ // skal ændres hvis flere alarmer tilføjes off-tid
-			if(secCount == buzzerTime){
-				chooseCommand(5);//slave1_buzzer_off
-			}
-			if(currentTime == coffeeTime){
-				chooseCommand(6); //slave2_kaffe_off
-			}
-		}*/
+
 	}
-	return 0;
 }

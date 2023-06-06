@@ -10,7 +10,6 @@
 #ifndef X10_H_
 #define X10_H_
 #include "clock.h"
-#include "lyd.h"
 #include <stdbool.h>
 #include <stdint.h>
 

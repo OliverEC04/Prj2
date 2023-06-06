@@ -65,13 +65,13 @@ void writeAlarmsEEPROM(int data[][4]){ // skriver alarmSettings til EEPROM
 			uint8_t MID = (data[i][j] >> 8);
 			uint8_t MSB = (data[i][j] >> 16);
 			
-			eeprom_write_byte((uint8_t*)write_address,LSB);//typecast til uint8-pointer og skriv bytes.
-			eeprom_busy_wait();							   //vent på den er færdig
-			++write_address;								//incrementer addressen
-			eeprom_write_byte((uint8_t*)write_address,MID);
+			eeprom_write_byte(&write_address,LSB);//skriv bytes.
+			eeprom_busy_wait();	                  //vent på den er færdig
+			++write_address;					  //incrementer addressen
+			eeprom_write_byte(&write_address,MID);
 			eeprom_busy_wait();
 			++write_address;
-			eeprom_write_byte((uint8_t*)write_address,MSB);
+			eeprom_write_byte(&write_address,MSB);
 			eeprom_busy_wait();
 			++write_address;
 		}
@@ -84,13 +84,13 @@ void readAlarmsEEPROM(int data[][4]){// læser settings fra EEPROM og skriver til
 	
 	for (int i = 0; i < 28; i++) {
 		
-		uint8_t LSB = eeprom_read_byte((uint8_t*)read_address); //læs byte fra LBS til MSB
+		uint8_t LSB = eeprom_read_byte(&read_address); //læs byte fra LBS til MSB
 		++read_address;
 		eeprom_busy_wait();
-		uint8_t MID = eeprom_read_byte((uint8_t*)read_address);
+		uint8_t MID = eeprom_read_byte(&read_address);
 		++read_address;
 		eeprom_busy_wait();
-		uint8_t MSB = eeprom_read_byte((uint8_t*)read_address);
+		uint8_t MSB = eeprom_read_byte(&read_address);
 		++read_address;
 		eeprom_busy_wait();
 		

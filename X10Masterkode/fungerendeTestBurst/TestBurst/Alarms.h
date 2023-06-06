@@ -29,6 +29,6 @@ void writeAlarmsEEPROM(int data[][4]);
 void readAlarmsEEPROM(int data[][4]);
 void serialReadAlarms();
 void serialSendAlarms();
-int checkTime(int);
+int checkTime(volatile int);
 
 #endif /* ALARMS_H_ */
